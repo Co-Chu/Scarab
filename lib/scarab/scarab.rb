@@ -8,4 +8,6 @@
 # @author Matthew Lanigan <rintaun@gmail.com>
 # @since 1.0.0
 module Scarab
+    require_relative 'app'
+    require_relative 'controller'
 end
