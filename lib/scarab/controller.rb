@@ -15,9 +15,10 @@ module Scarab
                     Class.new(base) do
                         define_singleton_method(:route_prefix) { prefix }
 
-                        def self.extended(child)
+                        define_singleton_method(:inherited) do |othermod|
+                            super(othermod)
                             return unless mod.respond_to? :register_controller
-                            mod.register_controller(child)
+                            mod.register_controller(othermod)
                         end
                     end
                 end
