@@ -23,19 +23,20 @@ module Scarab
                     end
                 end
             end
-        end
 
-        %i[get put post delete head options patch link unlink].each do |verb|
-            define_method(verb) do |path = '', **options, &block|
-                super(path, options, &block)
+            %i[get put post delete head options patch link unlink].each do |vrb|
+                define_method(vrb) do |path = '', **options, &block|
+                    super(path, options, &block)
+                end
             end
-        end
 
-        def route(verb, path, options = {}, &block)
-            if self.class.respond_to? :route_prefix
-                path.prepend self.class.route_prefix
+            def route(verb, path, **options, &block)
+                path = route_prefix + path if respond_to? :route_prefix
+                if respond_to? :logger
+                    logger.debug "Registering route #{verb} #{path}"
+                end
+                super(verb, path, options, &block)
             end
-            super
         end
 
         extend ClassMethods
