@@ -17,6 +17,37 @@ And then execute:
 
 ## Usage
 
+```ruby
+require 'scarab'
+
+class UserController < Scarab::Controller('/users')
+    get do # GET /users
+        # do something here...
+    end
+
+    get '/:id' do # GET /users/:id
+        # do something here...
+    end
+end
+
+class SessionController < Scarab::Controller('/sessions')
+    post do # POST /sessions
+        # do something here...
+    end
+
+    delete '/:id' do # DELETE /sessions/:id
+        # do something here...
+    end
+end
+
+Scarab::App.run
+```
+
+Controllers and apps are just normal Sinatra modular applications and should be
+able to use anything that you would expect to be able to use with Sinatra. They
+are fully encapsulated from each other, and automatically registered with the
+`Scarab::App` container application.
+
 ## Contributing
 
 Bug reports and pull requests are welcome at [Scarab on GitHub][github]. This
