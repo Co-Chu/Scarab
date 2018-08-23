@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'scarab/app'
 require 'sinatra/base'
 
 module Scarab
@@ -10,15 +11,15 @@ module Scarab
             # Defines a method 'Controller' on the target which is be used to
             # create subclasses of Controller dynamically with specified
             # settings. Inspired by Sequel's `Sequel::Model()` method.
-            def def_controller_method(mod, base = self)
+            def def_controller_method(mod, app: mod, base: self)
                 mod.define_singleton_method(:Controller) do |prefix = ''|
                     Class.new(base) do
                         define_singleton_method(:route_prefix) { prefix }
 
                         define_singleton_method(:inherited) do |othermod|
                             super(othermod)
-                            return unless mod.respond_to? :register_controller
-                            mod.register_controller(othermod)
+                            return unless app.respond_to? :register_controller
+                            app.register_controller(othermod)
                         end
                     end
                 end
@@ -41,6 +42,6 @@ module Scarab
 
         extend ClassMethods
 
-        def_controller_method(::Scarab)
+        def_controller_method(::Scarab, app: Scarab::App)
     end
 end
