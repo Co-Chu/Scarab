@@ -8,8 +8,15 @@
 # @author Matthew Lanigan <rintaun@gmail.com>
 # @since 1.0.0
 module Scarab
+    # Utilities used for logging requests
+    module Logging
+        require 'scarab/logging/formatter'
+        require 'scarab/logging/request'
+    end
+
     # Various utility middleware used by Scarab
     module Middleware
+        require 'scarab/middleware/logger'
         require 'scarab/middleware/request_id'
         require 'scarab/middleware/server_aware'
     end
