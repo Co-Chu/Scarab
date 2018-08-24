@@ -9,6 +9,12 @@ module Scarab
             Middleware::ServerAware.new(super, self)
         end
 
+        def self.default_middleware_by_environment
+            Hash[super.map do |k, v|
+                [k, [Middleware::RequestId] + v]
+            end]
+        end
+
         def start(&block)
             super do |server|
                 @handler = server

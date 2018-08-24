@@ -10,6 +10,7 @@
 module Scarab
     # Various utility middleware used by Scarab
     module Middleware
+        require 'scarab/middleware/request_id'
         require 'scarab/middleware/server_aware'
     end
 
