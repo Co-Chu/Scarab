@@ -5,6 +5,10 @@ require 'rack'
 module Scarab
     # Utility extension of Rack::Server
     class Server < Rack::Server
+        def build_app(app)
+            Middleware::ServerAware.new(super, self)
+        end
+
         def start(&block)
             super do |server|
                 @handler = server
