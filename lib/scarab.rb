@@ -10,5 +10,6 @@
 module Scarab
     require 'scarab/app'
     require 'scarab/controller'
+    require 'scarab/server'
     require 'scarab/version'
 end
