@@ -15,6 +15,10 @@ module Scarab
             end]
         end
 
+        def self.logging_middleware
+            nil
+        end
+
         def start(&block)
             super do |server|
                 @handler = server

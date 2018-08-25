@@ -38,6 +38,8 @@ module Scarab
                 end
                 super(verb, path, options, &block)
             end
+
+            def setup_logging(builder) end
         end
 
         extend ClassMethods

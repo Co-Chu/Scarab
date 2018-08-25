@@ -13,5 +13,7 @@ module Scarab
         def self.register_controller(other)
             use other
         end
+
+        def self.setup_logging(builder) end
     end
 end
