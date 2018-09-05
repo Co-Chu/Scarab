@@ -17,6 +17,7 @@ module Scarab
                         define_singleton_method(:route_prefix) { prefix }
 
                         define_singleton_method(:inherited) do |othermod|
+                            othermod.set :app_file, caller_files[1]
                             super(othermod)
                             return unless app.respond_to? :register_controller
                             app.register_controller(othermod)
