@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'mustermann'
 require 'scarab/app'
 require 'sinatra/base'
 
@@ -13,11 +14,13 @@ module Scarab
             # settings. Inspired by Sequel's `Sequel::Model()` method.
             def def_controller_method(mod, app: mod, base: self)
                 mod.define_singleton_method(:Controller) do |prefix = ''|
+                    pattern = Mustermann.new(%r{#{prefix}(/.*)?})
                     Class.new(base) do
                         define_singleton_method(:route_prefix) { prefix }
 
                         define_singleton_method(:inherited) do |othermod|
                             othermod.set :app_file, caller_files[1]
+                            othermod.set :route_pattern, pattern
                             super(othermod)
                             return unless app.respond_to? :register_controller
                             app.register_controller(othermod)
@@ -41,6 +44,18 @@ module Scarab
             end
 
             def setup_logging(builder) end
+        end
+
+        # Passes control back to the app if the controller is part of a
+        # {Scarab::App}, but otherwise acts like a normal Sinatra application.
+        def route_missing
+            @app.is_a?(App) ? throw(:pass) : super
+        end
+
+        # Passes control back to the app if the controller is part of a
+        # {Scarab::App}, but otherwise acts like a normal Sinatra application.
+        def invoke
+            @app.is_a?(App) ? yield : super
         end
 
         extend ClassMethods
