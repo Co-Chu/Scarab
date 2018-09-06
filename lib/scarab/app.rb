@@ -44,7 +44,11 @@ module Scarab
             if (pattern = controller.settings.route_pattern)
                 return unless pattern === request.path_info
             end
-            catch(:pass) { controller.call(env) }
+            catch(:pass) do
+                controller.dup.tap do |c|
+                    c.app = self
+                end.call!(env)
+            end
         end
     end
 end
