@@ -63,8 +63,8 @@ module Scarab
             @app.send(name, *args)
         end
 
-        def respond_to_missing?(name)
-            @app.is_a?(App) ? @app.respond_to?(name) : super
+        def respond_to_missing?(name, include_all = false)
+            @app.is_a?(App) ? @app.respond_to?(name, include_all) : super
         end
 
         extend ClassMethods
