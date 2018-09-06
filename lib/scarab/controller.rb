@@ -58,6 +58,15 @@ module Scarab
             @app.is_a?(App) ? yield : super
         end
 
+        def method_missing(name, *args)
+            return super unless @app.is_a?(App) && @app.respond_to?(name)
+            @app.send(name, *args)
+        end
+
+        def respond_to_missing?(name)
+            @app.is_a?(App) ? @app.respond_to?(name) : super
+        end
+
         extend ClassMethods
 
         def_controller_method(::Scarab, app: Scarab::App)
