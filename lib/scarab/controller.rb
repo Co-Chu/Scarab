@@ -58,9 +58,9 @@ module Scarab
             @app.is_a?(App) ? yield : super
         end
 
-        def method_missing(name, *args)
+        def method_missing(name, *args, &block)
             return super unless @app.is_a?(App) && @app.respond_to?(name)
-            @app.send(name, *args)
+            @app.send(name, *args, &block)
         end
 
         def respond_to_missing?(name, include_all = false)
